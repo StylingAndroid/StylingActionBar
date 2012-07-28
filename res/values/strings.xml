@@ -4,5 +4,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
     <string name="title_activity_main">ActionBar Demo</string>
-
+    <string name="frag1">Fragment 1</string>
+    <string name="frag2">Fragment 2</string>
+    
 </resources>
