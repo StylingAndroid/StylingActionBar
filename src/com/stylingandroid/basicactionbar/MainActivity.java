@@ -14,10 +14,14 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.SimpleAdapter;
+import android.widget.Spinner;
 
 public class MainActivity extends Activity
 {
+	private MenuItem mSpinnerItem = null;
 
 	private class MyTabListener implements ActionBar.TabListener
 	{
@@ -58,14 +62,36 @@ public class MainActivity extends Activity
 	{
 		super.onCreate( savedInstanceState );
 
+		int mode = ActionBar.NAVIGATION_MODE_TABS;
+
+		if (savedInstanceState != null)
+		{
+			mode = savedInstanceState.getInt( "mode",
+					ActionBar.NAVIGATION_MODE_TABS );
+		}
 		ActionBar ab = getActionBar();
-		setTabNavigation( ab );
+		if (mode == ActionBar.NAVIGATION_MODE_TABS)
+		{
+			setTabNavigation( ab );
+		} else
+		{
+			setListNavigation( ab );
+		}
+	}
+
+	@Override
+	protected void onSaveInstanceState( Bundle outState )
+	{
+		outState.putInt( "mode", getActionBar().getNavigationMode() );
+		super.onSaveInstanceState( outState );
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu( Menu menu )
 	{
 		getMenuInflater().inflate( R.menu.main, menu );
+		mSpinnerItem = menu.findItem( R.id.menu_spinner );
+		setupSpinner( mSpinnerItem );
 		return true;
 	}
 
@@ -114,21 +140,27 @@ public class MainActivity extends Activity
 				.setTabListener(
 						new MyTabListener( this, Fragment2.class.getName() ) );
 		actionBar.addTab( tab );
+		if (mSpinnerItem != null)
+		{
+			mSpinnerItem.setVisible( false );
+		}
 	}
 
 	private void setListNavigation( ActionBar actionBar )
 	{
 		actionBar.setNavigationMode( ActionBar.NAVIGATION_MODE_LIST );
-		actionBar.setTitle( "" );
-		final List<Map<String, Object>> data = 
-				new ArrayList<Map<String, Object>>();
+		actionBar.setDisplayShowTitleEnabled( false );
+
+		final List<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put( "title", getString( R.string.frag1 ) );
-		map.put( "fragment", Fragment.instantiate( this, Fragment1.class.getName() ));
+		map.put( "fragment",
+				Fragment.instantiate( this, Fragment1.class.getName() ) );
 		data.add( map );
 		map = new HashMap<String, Object>();
 		map.put( "title", getString( R.string.frag2 ) );
-		map.put( "fragment", Fragment.instantiate( this, Fragment2.class.getName() ));
+		map.put( "fragment",
+				Fragment.instantiate( this, Fragment2.class.getName() ) );
 		data.add( map );
 		SimpleAdapter adapter = new SimpleAdapter( this, data,
 				android.R.layout.simple_spinner_dropdown_item,
@@ -136,22 +168,38 @@ public class MainActivity extends Activity
 		actionBar.setListNavigationCallbacks( adapter,
 				new OnNavigationListener()
 				{
-
 					@Override
 					public boolean onNavigationItemSelected( int itemPosition,
 							long itemId )
 					{
 						Map<String, Object> map = data.get( itemPosition );
 						Object o = map.get( "fragment" );
-						if( o instanceof Fragment ) 
+						if (o instanceof Fragment)
 						{
-							FragmentTransaction tx = getFragmentManager().beginTransaction();
-							tx.replace( android.R.id.content, (Fragment )o );
+							FragmentTransaction tx = getFragmentManager()
+									.beginTransaction();
+							tx.replace( android.R.id.content, (Fragment) o );
 							tx.commit();
 						}
 						return true;
 					}
-				} 
-		);
+				} );
+		if (mSpinnerItem != null)
+		{
+			setupSpinner( mSpinnerItem );
+		}
+	}
+
+	private void setupSpinner( MenuItem item)
+	{
+		item.setVisible( getActionBar().getNavigationMode() == ActionBar.NAVIGATION_MODE_LIST );
+		View view = item.getActionView();
+		if (view instanceof Spinner)
+		{
+			Spinner spinner = (Spinner) view;
+			spinner.setAdapter( ArrayAdapter.createFromResource( this,
+					R.array.spinner_data,
+					android.R.layout.simple_spinner_dropdown_item ) );
+		}
 	}
 }

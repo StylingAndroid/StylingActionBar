@@ -1,6 +1,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
+        android:id="@+id/menu_spinner"
+        android:actionViewClass="android.widget.Spinner"
+        android:visible="false"
+        android:showAsAction="always"/>
+    <item
         android:id="@+id/menu_toggle"
         android:icon="@android:drawable/ic_menu_directions"
         android:showAsAction="ifRoom">

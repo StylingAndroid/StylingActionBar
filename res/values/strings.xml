@@ -6,5 +6,12 @@
     <string name="title_activity_main">ActionBar Demo</string>
     <string name="frag1">Fragment 1</string>
     <string name="frag2">Fragment 2</string>
-    
+
+    <string-array name="spinner_data">
+        <item>One</item>
+        <item>Two</item>
+        <item>Three</item>
+        <item>Four</item>
+    </string-array>
+
 </resources>
