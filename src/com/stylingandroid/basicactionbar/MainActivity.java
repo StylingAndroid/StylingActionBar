@@ -14,7 +14,9 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.ActionMode;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -22,6 +24,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SimpleAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 public class MainActivity extends Activity
 {
@@ -65,6 +68,48 @@ public class MainActivity extends Activity
 		}
 	}
 
+	private ActionMode.Callback mCallback = new ActionMode.Callback()
+	{
+
+		@Override
+		public boolean onPrepareActionMode( ActionMode mode, Menu menu )
+		{
+			return false;
+		}
+
+		@Override
+		public void onDestroyActionMode( ActionMode mode )
+		{
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public boolean onCreateActionMode( ActionMode mode, Menu menu )
+		{
+			MenuInflater inflater = mode.getMenuInflater();
+			inflater.inflate( R.menu.actionmode, menu );
+			MenuItem item = menu.findItem( R.id.action_text );
+			View v = item.getActionView();
+			if( v instanceof TextView )
+			{
+				((TextView)v).setText( R.string.actionmode_title );
+			}
+			return true;
+		}
+
+		@Override
+		public boolean onActionItemClicked( ActionMode mode, MenuItem item )
+		{
+			boolean ret = false;
+			if(item.getItemId() == R.id.actionmode_cancel) {
+				mode.finish();
+				ret = true;
+			}
+			return ret;
+		}
+	};
+
 	@Override
 	public void onCreate( Bundle savedInstanceState )
 	{
@@ -106,25 +151,29 @@ public class MainActivity extends Activity
 				.setVisible( getActionBar().getNavigationMode() == ActionBar.NAVIGATION_MODE_TABS );
 		mSearch = (EditText) mSearchItem.getActionView().findViewById(
 				R.id.search );
-		mDelete = (Button) mSearchItem.getActionView().findViewById( R.id.delete );
-		mDelete.setVisibility( mSearch.getText().length() > 0 ? View.VISIBLE : View.GONE );
+		mDelete = (Button) mSearchItem.getActionView().findViewById(
+				R.id.delete );
+		mDelete.setVisibility( mSearch.getText().length() > 0 ? View.VISIBLE
+				: View.GONE );
 		mSearch.addTextChangedListener( new TextWatcher()
-		{		
+		{
 			@Override
-			public void onTextChanged( CharSequence s, int start, int before, int count )
+			public void onTextChanged( CharSequence s, int start, int before,
+					int count )
 			{
 			}
-			
+
 			@Override
-			public void beforeTextChanged( CharSequence s, int start, int count,
-					int after )
+			public void beforeTextChanged( CharSequence s, int start,
+					int count, int after )
 			{
 			}
-			
+
 			@Override
 			public void afterTextChanged( Editable s )
 			{
-				mDelete.setVisibility( s.length() > 0 ? View.VISIBLE : View.GONE );
+				mDelete.setVisibility( s.length() > 0 ? View.VISIBLE
+						: View.GONE );
 			}
 		} );
 		return true;
@@ -150,6 +199,10 @@ public class MainActivity extends Activity
 				setTabNavigation( ab );
 				mSearchItem.setVisible( true );
 			}
+			ret = true;
+		} else if( item.getItemId() == R.id.menu_actionmode)
+		{
+			startActionMode( mCallback );
 			ret = true;
 		} else
 		{

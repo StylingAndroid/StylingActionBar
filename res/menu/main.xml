@@ -16,6 +16,11 @@
         android:showAsAction="always">
     </item>
     <item
+        android:id="@+id/menu_actionmode"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/menu_actionmode"/>
+    <item
         android:id="@+id/menu_settings"
         android:orderInCategory="100"
         android:showAsAction="never"
