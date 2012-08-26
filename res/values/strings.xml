@@ -13,5 +13,6 @@
         <item>Three</item>
         <item>Four</item>
     </string-array>
+        <string name="search">Search</string>
 
 </resources>

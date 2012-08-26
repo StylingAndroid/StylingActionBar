@@ -12,16 +12,24 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 
 public class MainActivity extends Activity
 {
 	private MenuItem mSpinnerItem = null;
+	private MenuItem mSearchItem = null;
+
+	private EditText mSearch = null;
+	private Button mDelete = null;
 
 	private class MyTabListener implements ActionBar.TabListener
 	{
@@ -70,6 +78,7 @@ public class MainActivity extends Activity
 					ActionBar.NAVIGATION_MODE_TABS );
 		}
 		ActionBar ab = getActionBar();
+		ab.setDisplayShowTitleEnabled( false );
 		if (mode == ActionBar.NAVIGATION_MODE_TABS)
 		{
 			setTabNavigation( ab );
@@ -92,6 +101,32 @@ public class MainActivity extends Activity
 		getMenuInflater().inflate( R.menu.main, menu );
 		mSpinnerItem = menu.findItem( R.id.menu_spinner );
 		setupSpinner( mSpinnerItem );
+		mSearchItem = menu.findItem( R.id.menu_search );
+		mSearchItem
+				.setVisible( getActionBar().getNavigationMode() == ActionBar.NAVIGATION_MODE_TABS );
+		mSearch = (EditText) mSearchItem.getActionView().findViewById(
+				R.id.search );
+		mDelete = (Button) mSearchItem.getActionView().findViewById( R.id.delete );
+		mDelete.setVisibility( mSearch.getText().length() > 0 ? View.VISIBLE : View.GONE );
+		mSearch.addTextChangedListener( new TextWatcher()
+		{		
+			@Override
+			public void onTextChanged( CharSequence s, int start, int before, int count )
+			{
+			}
+			
+			@Override
+			public void beforeTextChanged( CharSequence s, int start, int count,
+					int after )
+			{
+			}
+			
+			@Override
+			public void afterTextChanged( Editable s )
+			{
+				mDelete.setVisibility( s.length() > 0 ? View.VISIBLE : View.GONE );
+			}
+		} );
 		return true;
 	}
 
@@ -109,9 +144,11 @@ public class MainActivity extends Activity
 			if (ab.getNavigationMode() == ActionBar.NAVIGATION_MODE_TABS)
 			{
 				setListNavigation( ab );
+				mSearchItem.setVisible( false );
 			} else
 			{
 				setTabNavigation( ab );
+				mSearchItem.setVisible( true );
 			}
 			ret = true;
 		} else
@@ -149,7 +186,6 @@ public class MainActivity extends Activity
 	private void setListNavigation( ActionBar actionBar )
 	{
 		actionBar.setNavigationMode( ActionBar.NAVIGATION_MODE_LIST );
-		actionBar.setDisplayShowTitleEnabled( false );
 
 		final List<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -190,7 +226,7 @@ public class MainActivity extends Activity
 		}
 	}
 
-	private void setupSpinner( MenuItem item)
+	private void setupSpinner( MenuItem item )
 	{
 		item.setVisible( getActionBar().getNavigationMode() == ActionBar.NAVIGATION_MODE_LIST );
 		View view = item.getActionView();
@@ -200,6 +236,14 @@ public class MainActivity extends Activity
 			spinner.setAdapter( ArrayAdapter.createFromResource( this,
 					R.array.spinner_data,
 					android.R.layout.simple_spinner_dropdown_item ) );
+		}
+	}
+
+	public void delete( View v )
+	{
+		if (mSearch != null)
+		{
+			mSearch.setText( "" );
 		}
 	}
 }

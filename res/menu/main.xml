@@ -6,9 +6,14 @@
         android:visible="false"
         android:showAsAction="always"/>
     <item
+        android:id="@+id/menu_search"
+        android:showAsAction="always"
+        android:actionLayout="@layout/search_layout">
+    </item>
+    <item
         android:id="@+id/menu_toggle"
         android:icon="@android:drawable/ic_menu_directions"
-        android:showAsAction="ifRoom">
+        android:showAsAction="always">
     </item>
     <item
         android:id="@+id/menu_settings"
