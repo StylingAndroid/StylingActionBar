@@ -27,11 +27,14 @@
 
     <style name="DropDownListView" parent="@android:style/Widget.Holo.ListView.DropDown">
         <item name="android:listSelector">@drawable/selectable_background_stylingactionbar</item>
+        <item name="android:divider">@color/pressed</item>
+        <item name="android:dividerHeight">1dp</item>
     </style>
 
     <style name="Theme.stylingactionbar.widget" parent="@android:style/Theme.Holo">
         <item name="android:popupMenuStyle">@style/PopupMenu</item>
         <item name="android:dropDownListViewStyle">@style/DropDownListView</item>
+        <item name="android:spinnerStyle">@style/DropDownNav</item>
     </style>
 
     <style name="DropDownNav" parent="@android:style/Widget.Holo.Spinner">
