@@ -19,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -155,6 +156,16 @@ public class MainActivity extends Activity
 				R.id.delete );
 		mDelete.setVisibility( mSearch.getText().length() > 0 ? View.VISIBLE
 				: View.GONE );
+		mDelete.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				if (mSearch != null)
+				{
+					mSearch.setText( "" );
+				}				
+			}
+		});
 		mSearch.addTextChangedListener( new TextWatcher()
 		{
 			@Override
@@ -289,14 +300,6 @@ public class MainActivity extends Activity
 			spinner.setAdapter( ArrayAdapter.createFromResource( this,
 					R.array.spinner_data,
 					android.R.layout.simple_spinner_dropdown_item ) );
-		}
-	}
-
-	public void delete( View v )
-	{
-		if (mSearch != null)
-		{
-			mSearch.setText( "" );
 		}
 	}
 }

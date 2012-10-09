@@ -35,6 +35,8 @@
         <item name="android:popupMenuStyle">@style/PopupMenu</item>
         <item name="android:dropDownListViewStyle">@style/DropDownListView</item>
         <item name="android:spinnerStyle">@style/DropDownNav</item>
+        <item name="android:editTextBackground">@drawable/edit_text_holo_dark</item>
+        <item name="android:textColorHint">@color/hint</item>
     </style>
 
     <style name="DropDownNav" parent="@android:style/Widget.Holo.Spinner">
@@ -49,6 +51,10 @@
 
     <style name="SpinnerItem" parent="@android:style/Widget.Holo.TextView.SpinnerItem">
         <item name="android:textAppearance">?android:attr/textAppearanceInverse</item>
+    </style>
+
+    <style name="EditText" parent="@android:style/Widget.Holo.EditText">
+        <item name="android:background">@drawable/edit_text_holo_dark</item>
     </style>
 
 </resources>
