@@ -10,6 +10,8 @@
         <item name="android:spinnerDropDownItemStyle">@style/DropDownItem</item>
         <item name="android:spinnerItemStyle">@style/SpinnerItem</item>
         <item name="android:actionBarItemBackground">@drawable/selectable_item_background_stylingactionbar</item>
+        <item name="android:actionModeBackground">@drawable/cab_background_top</item>
+        <item name="android:actionModeCloseButtonStyle">@style/CloseButton</item>
     </style>
 
     <style name="ActionBar" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
@@ -57,4 +59,9 @@
     <style name="EditText" parent="@android:style/Widget.Holo.EditText">
         <item name="android:background">@drawable/edit_text_holo_dark</item>
     </style>
+
+    <style name="CloseButton" parent="@android:style/Widget.Holo.ActionButton.CloseMode">
+        <item name="android:background">@drawable/selectable_background_stylingactionbar</item>
+    </style>
+
 </resources>
